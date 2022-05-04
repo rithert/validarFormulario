@@ -21,9 +21,9 @@ function eventListeners(){
     asunto.addEventListener('blur',validarFormulario);
     mensaje.addEventListener('blur',validarFormulario);
     //Reinicia el formulario
-    btnReset.addEventListener('click',limpiaFormulario)
+    btnReset.addEventListener('click',limpiaFormulario);
     //enviar email
-    formulario.addEventListener('submit',envioEmail)
+    formulario.addEventListener('submit',enviarEmail)
 }
 
 //aCCIONES QUE SE QUIERES HACER LA CARGAR EL DOCUMENTO
@@ -91,7 +91,7 @@ function mostrarError(mensaje){
 
 ///envia email
 
-function envioEmail(e){
+function enviarEmail(e){
     e.preventDefault();
     const spinner = document.querySelector('#spinner')
     spinner.style.display = 'flex'
@@ -112,7 +112,9 @@ function envioEmail(e){
 }
 
 //limpia el formulario
-function limpiaFormulario(){
+function limpiaFormulario(e){
+    e.preventDefault()
     formulario.reset()
+    iniciarApp()
 
 }
