@@ -1,5 +1,5 @@
-const btnEnviar = document.querySelector("#enviar")
 const btnReset = document.querySelector("#resetBtn")
+const btnEnviar = document.querySelector("#enviar1")
 
 
 //variables del formulario
@@ -23,7 +23,7 @@ function eventListeners(){
     //Reinicia el formulario
     btnReset.addEventListener('click',limpiaFormulario);
     //enviar email
-    formulario.addEventListener('submit',enviarEmail)
+    formulario.addEventListener("submit",enviarEmail)
 }
 
 //aCCIONES QUE SE QUIERES HACER LA CARGAR EL DOCUMENTO
@@ -68,7 +68,7 @@ function validarFormulario(e){
 
     if(er.test(email.value) && asunto.value!=="" && mensaje.value!==""){
         console.log("campos validados")
-        btnEnviar.disable = false
+        btnEnviar.disabled = false
         btnEnviar.classList.remove('cursor-not-allowed', 'opacity-50')
     }else{
         console.log("Aun faltan campos")
@@ -113,8 +113,6 @@ function enviarEmail(e){
 
 //limpia el formulario
 function limpiaFormulario(e){
-    e.preventDefault()
     formulario.reset()
     iniciarApp()
-
 }
