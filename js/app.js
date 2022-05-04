@@ -27,24 +27,48 @@ function iniciarApp(){
 
 function validarFormulario(e){
     if(e.target.value.length > 0){
-        console.log("Si hay txt")
+        const menError =  document.querySelector("p.error");
+        if(menError){
+            menError.remove();
+        }
+        
+        //elimina los colores de errores
+        e.target.classList.remove('border','border-red-500')
+        e.target.classList.add('border','border-green-500')
     }
     else{
+        e.target.classList.remove('border','border-green-500')
         e.target.classList.add('border','border-red-500')
-        mostrarError()
+        mostrarError("Campo Obligatorio")
+        pasoMal = true
+    }
+
+    if(e.target.type==='email'){
+        const er = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(er.test(e.target.value)){
+            const menError =  document.querySelector("p.error");
+            if(menError){
+                menError.remove();
+            }
+            e.target.classList.remove('border','border-red-500')
+            e.target.classList.add('border','border-green-500')
+        }
+        else{
+            e.target.classList.remove('border','border-green-500')
+            e.target.classList.add('border','border-red-500')
+            mostrarError("e-mail no valido")
+        }
     }
 }
 
 
-function mostrarError(){
+function mostrarError(mensaje){
     const mensajeError = document.createElement('p');
-    mensajeError.textContent = "Todos los campos son obligatorios"
+    mensajeError.textContent = mensaje
     mensajeError.classList.add('border','border-red-500', 'background-color-100', 'text-red-500','p-3', 'm-3','error')
 
     const errores = document.querySelectorAll(".error")
     if(errores.length == 0){
         formulario.appendChild(mensajeError)
     }
-
-    
 }
