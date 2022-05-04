@@ -1,4 +1,5 @@
 const btnEnviar = document.querySelector("#enviar")
+const btnReset = document.querySelector("#resetBtn")
 
 
 //variables del formulario
@@ -6,6 +7,8 @@ const email = document.querySelector("#email")
 const asunto = document.querySelector("#asunto")
 const mensaje = document.querySelector("#mensaje")
 const formulario = document.querySelector("#enviar-mail")
+const er = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        
 
 
 eventListeners()
@@ -17,11 +20,15 @@ function eventListeners(){
     email.addEventListener('blur',validarFormulario);
     asunto.addEventListener('blur',validarFormulario);
     mensaje.addEventListener('blur',validarFormulario);
+    //Reinicia el formulario
+    btnReset.addEventListener('click',limpiaFormulario)
+    //enviar email
+    formulario.addEventListener('submit',envioEmail)
 }
 
 //aCCIONES QUE SE QUIERES HACER LA CARGAR EL DOCUMENTO
 function iniciarApp(){
-    btnEnviar.disable = true
+    btnEnviar.disabled = true
     btnEnviar.classList.add('cursor-not-allowed', 'opacity-50')
 }
 
@@ -44,7 +51,6 @@ function validarFormulario(e){
     }
 
     if(e.target.type==='email'){
-        const er = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if(er.test(e.target.value)){
             const menError =  document.querySelector("p.error");
             if(menError){
@@ -59,6 +65,15 @@ function validarFormulario(e){
             mostrarError("e-mail no valido")
         }
     }
+
+    if(er.test(email.value) && asunto.value!=="" && mensaje.value!==""){
+        console.log("campos validados")
+        btnEnviar.disable = false
+        btnEnviar.classList.remove('cursor-not-allowed', 'opacity-50')
+    }else{
+        console.log("Aun faltan campos")
+    }
+
 }
 
 
@@ -71,4 +86,33 @@ function mostrarError(mensaje){
     if(errores.length == 0){
         formulario.appendChild(mensajeError)
     }
+}
+
+
+///envia email
+
+function envioEmail(e){
+    e.preventDefault();
+    const spinner = document.querySelector('#spinner')
+    spinner.style.display = 'flex'
+    //despues de 3 segundos se desaparece
+    setTimeout(()=>{
+        spinner.style.display = 'none'
+        //mensaje de satifaccion
+        const mensajeExito = document.createElement('p')
+        mensajeExito.classList.add('text-center', 'my-10','p-5','bg-green-500','text-white','font-bold')
+        mensajeExito.textContent="Email enviado"
+        //inserta el mensaje de exito antes del spinnner
+        formulario.insertBefore(mensajeExito,spinner)
+        setTimeout(()=>{
+            mensajeExito.remove() //eliminar el mensaje de exito
+            limpiaFormulario()
+        },2000)
+    },3000);
+}
+
+//limpia el formulario
+function limpiaFormulario(){
+    formulario.reset()
+
 }
